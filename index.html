@@ -1,66 +1,79 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aguarde...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sarah - Foto Privada</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #ffffff;
-      color: #333;
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
+    body { background-color: #000; font-family: 'Inter', sans-serif; overflow: hidden; }
+    
+    .progress-container {
+      position: absolute; top: 10px; left: 2%; width: 96%; height: 4px;
+      background: rgba(0,0,0,0.5); border-radius: 4px; z-index: 50; backdrop-filter: blur(2px);
+    }
+    .progress-bar {
+      height: 100%; background: #ec4899; width: 0%; border-radius: 4px;
+      box-shadow: 0 0 10px #ec4899;
+      transition: width linear;
     }
 
-    .spinner {
-      margin-top: 20px;
-      width: 40px;
-      height: 40px;
-      border: 4px solid #ccc;
-      border-top: 4px solid #333;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
+    #paywall {
+      display: none; opacity: 0; transition: opacity 0.4s ease;
+      background: #09090b;
     }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    #paywall.show { display: flex; opacity: 1; }
   </style>
-
-  <!-- Pixel do Facebook -->
-  <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '709730758431546'); // 
-    fbq('track', 'PageView');
-  </script>
-  <noscript>
-    <img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=709730758431546=PageView&noscript=1"/>
-  </noscript>
-
-  <!-- Redirecionamento após 3 segundos -->
-  <script>
-    setTimeout(function() {
-      window.location.href = window.location.href = "https://wa.me/556181949278?text=Quero%20ter%20acesso";
-    }, 3000);
-  </script>
 </head>
-<body>
-  <h1>Aguarde alguns segundos...</h1>
-  <div class="spinner"></div>
+<body class="h-screen w-screen relative text-white">
+
+  <div id="media-container" class="absolute inset-0 z-0 bg-black">
+    <img src="https://s3.meucanalvip.org/sarinhaperfeita/previa06.jpeg" class="w-full h-full object-cover">
+  </div>
+
+  <div id="ui-overlay" class="progress-container">
+    <div id="progressBar" class="progress-bar"></div>
+  </div>
+
+  <div id="paywall" class="absolute inset-0 z-50 flex-col items-center justify-center p-8 text-center">
+    <div class="mb-6 bg-pink-500/10 p-6 rounded-full border border-pink-500/30">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      </svg>
+    </div>
+
+    <h2 class="text-2xl font-bold text-white mb-2">Conteúdo Privado</h2>
+    <p class="text-gray-400 mb-8 text-sm">
+      Essa foto expirou. <br> O acesso foi bloqueado automaticamente.
+    </p>
+
+    <div class="mt-4 text-[10px] text-gray-600 uppercase tracking-widest">Acesso Restrito</div>
+  </div>
+
+  <script>
+    // ================= CONFIGURAÇÃO =================
+    // Defina o tempo de duração (em segundos)
+    const TEMPO_SEGUNDOS = 8; 
+    // ================================================
+
+    const mediaContainer = document.getElementById('media-container');
+    const paywall = document.getElementById('paywall');
+    const progressBar = document.getElementById('progressBar');
+    const uiOverlay = document.getElementById('ui-overlay');
+
+    setTimeout(() => {
+      progressBar.style.transition = `width ${TEMPO_SEGUNDOS}s linear`;
+      progressBar.style.width = '100%';
+    }, 100);
+
+    setTimeout(() => {
+      mediaContainer.style.display = 'none'; 
+      uiOverlay.style.display = 'none';
+      paywall.classList.add('show');
+    }, TEMPO_SEGUNDOS * 1000);
+  </script>
 </body>
 </html>
+
